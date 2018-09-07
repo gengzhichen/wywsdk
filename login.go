@@ -1,4 +1,4 @@
-package main
+package wywauth
 
 import (
 	"math/rand"
