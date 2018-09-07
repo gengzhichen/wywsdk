@@ -1,24 +1,28 @@
 package wywauth
 
 import (
-	"math/rand"
-	"time"
-	"strconv"
-	"strings"
-	"net/url"
-	"sort"
 	"crypto/hmac"
 	"crypto/sha1"
 	"encoding/base64"
-	"net/http"
+	"encoding/json"
 	"io/ioutil"
+	"math/rand"
+	"net/http"
+	"net/url"
+	"sort"
+	"strconv"
+	"strings"
+	"time"
 )
-
 
 const SANDBOXURL = "http://openapi-test.hudong.qq.com"
 const PRODURL = "https://openapi.hudong.qq.com"
 const URI = "/openapi/apollo_verify_openid_openkey"
 
+type RespWywLogin struct {
+	Ret int    `json:"ret"`
+	Msg string `json:"msg"`
+}
 
 /**
 获取当前时间戳
@@ -31,7 +35,7 @@ func MakeTimestamp() int {
 签名
 http://wiki.open.qq.com/wiki/
 */
-func CheckWywAuth(appId string, gameId string, appKey string, openId string, openKey string, isSandbox bool) []byte {
+func CheckWywAuth(appId string, gameId string, appKey string, openId string, openKey string, isSandbox bool) RespWywLogin {
 
 	var targetURL string
 	if isSandbox {
@@ -89,6 +93,8 @@ func CheckWywAuth(appId string, gameId string, appKey string, openId string, ope
 
 	respBody, _ := ioutil.ReadAll(resp.Body)
 
-	return respBody
-}
+	ret := RespWywLogin{}
+	json.Unmarshal(respBody, &ret)
 
+	return ret
+}
