@@ -11,10 +11,10 @@ import (
 )
 
 // Get Item List from wyw
-func GetItemList(appId string, gameId string, appKey string, openId string, openKey string, isSandbox bool) RespGetItemList {
+func GetItemList(basicAuth BasicAuthInfo) RespGetItemList {
 
 	var targetURL string
-	if isSandbox {
+	if basicAuth.IsSandbox {
 		targetURL = SANDBOXURL + URIITEM
 	} else {
 		targetURL = PRODURL + URIITEM
@@ -22,16 +22,16 @@ func GetItemList(appId string, gameId string, appKey string, openId string, open
 
 	rand.Seed(time.Now().UnixNano())
 	body := map[string]string{}
-	body["appid"] = appId
-	body["gameid"] = gameId
-	body["openid"] = openId
-	body["openkey"] = openKey
+	body["appid"] = basicAuth.AppId
+	body["gameid"] = basicAuth.GameId
+	body["openid"] = basicAuth.OpenId
+	body["openkey"] = basicAuth.OpenKey
 	body["ts"] = strconv.Itoa(MakeTimestamp())
 	body["rnd"] = strconv.Itoa(rand.Intn(9999999))
 	body["cmd"] = "1"
 	body["mask"] = "1"
 
-	reqBodyStr := addSig(URIITEM, appKey, &body)
+	reqBodyStr := addSig(URIITEM, basicAuth.AppKey, &body)
 
 	// 发送POST请求
 	resp, err := http.Post(targetURL, "application/x-www-form-urlencoded", strings.NewReader(reqBodyStr))
@@ -50,10 +50,10 @@ func GetItemList(appId string, gameId string, appKey string, openId string, open
 }
 
 // Get Item List from wyw
-func ConsumeItems(appId string, gameId string, appKey string, openId string, openKey string, itemId int, itemCnt int, isSandbox bool) RespConsumeItem {
+func ConsumeItems(basicAuth BasicAuthInfo, itemId int, itemCnt int) RespConsumeItem {
 
 	var targetURL string
-	if isSandbox {
+	if basicAuth.IsSandbox {
 		targetURL = SANDBOXURL + URIITEM
 	} else {
 		targetURL = PRODURL + URIITEM
@@ -62,10 +62,10 @@ func ConsumeItems(appId string, gameId string, appKey string, openId string, ope
 	now := strconv.Itoa(MakeTimestamp())
 	rand.Seed(time.Now().UnixNano())
 	body := map[string]string{}
-	body["appid"] = appId
-	body["gameid"] = gameId
-	body["openid"] = openId
-	body["openkey"] = openKey
+	body["appid"] = basicAuth.AppId
+	body["gameid"] = basicAuth.GameId
+	body["openid"] = basicAuth.OpenId
+	body["openkey"] = basicAuth.OpenKey
 	body["itemids"] = strconv.Itoa(itemId)
 	body["itemnums"] = strconv.Itoa(itemCnt)
 	body["ts"] = now
@@ -74,7 +74,7 @@ func ConsumeItems(appId string, gameId string, appKey string, openId string, ope
 	body["cmd"] = "2"
 	body["mask"] = "1"
 
-	reqBodyStr := addSig(URIITEM, appKey, &body)
+	reqBodyStr := addSig(URIITEM, basicAuth.AppKey, &body)
 
 	// 发送POST请求
 	resp, err := http.Post(targetURL, "application/x-www-form-urlencoded", strings.NewReader(reqBodyStr))
@@ -95,10 +95,10 @@ func ConsumeItems(appId string, gameId string, appKey string, openId string, ope
 
 
 // Gift an Item to user
-func GiftItems(appId string, gameId string, appKey string, openId string, openKey string, itemId int, itemCnt int,  actType int,isSandbox bool) RespGetItemList {
+func GiftItems(basicAuth BasicAuthInfo, itemId int, itemCnt int,  actType int) RespGetItemList {
 
 	var targetURL string
-	if isSandbox {
+	if basicAuth.IsSandbox {
 		targetURL = SANDBOXURL + URIITEM
 	} else {
 		targetURL = PRODURL + URIITEM
@@ -107,10 +107,10 @@ func GiftItems(appId string, gameId string, appKey string, openId string, openKe
 	now := strconv.Itoa(MakeTimestamp())
 	rand.Seed(time.Now().UnixNano())
 	body := map[string]string{}
-	body["appid"] = appId
-	body["gameid"] = gameId
-	body["openid"] = openId
-	body["openkey"] = openKey
+	body["appid"] = basicAuth.AppId
+	body["gameid"] = basicAuth.GameId
+	body["openid"] = basicAuth.OpenId
+	body["openkey"] = basicAuth.OpenKey
 	body["itemids"] = strconv.Itoa(itemId)
 	body["itemnums"] = strconv.Itoa(itemCnt)
 	body["acttype"] = strconv.Itoa(actType)
@@ -120,7 +120,7 @@ func GiftItems(appId string, gameId string, appKey string, openId string, openKe
 	body["cmd"] = "3"
 	body["mask"] = "1"
 
-	reqBodyStr := addSig(URIITEM, appKey, &body)
+	reqBodyStr := addSig(URIITEM, basicAuth.AppKey, &body)
 
 	// 发送POST请求
 	resp, err := http.Post(targetURL, "application/x-www-form-urlencoded", strings.NewReader(reqBodyStr))

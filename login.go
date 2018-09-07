@@ -10,14 +10,13 @@ import (
 	"time"
 )
 
-
 // Check login
 // Ref to http://wiki.open.qq.com/wiki/
-func CheckWywAuth(appId string, gameId string, appKey string, openId string, openKey string, isSandbox bool) RespWywLogin {
+func CheckWywAuth(basicAuth BasicAuthInfo) RespWywLogin {
 
 	var targetURL string
 
-	if isSandbox {
+	if basicAuth.IsSandbox {
 		targetURL = SANDBOXURL + URIAUTH
 	} else {
 		targetURL = PRODURL + URIAUTH
@@ -25,14 +24,14 @@ func CheckWywAuth(appId string, gameId string, appKey string, openId string, ope
 
 	rand.Seed(time.Now().UnixNano())
 	body := map[string]string{}
-	body["appid"] = appId
-	body["gameid"] = gameId
-	body["openid"] = openId
-	body["openkey"] = openKey
+	body["appid"] = basicAuth.AppId
+	body["gameid"] = basicAuth.GameId
+	body["openid"] = basicAuth.OpenId
+	body["openkey"] = basicAuth.OpenKey
 	body["ts"] = strconv.Itoa(MakeTimestamp())
 	body["rnd"] = strconv.Itoa(rand.Intn(9999999))
 
-	reqBodyStr := addSig(URIAUTH,appKey,&body)
+	reqBodyStr := addSig(URIAUTH, basicAuth.AppKey, &body)
 
 	// 发送POST请求
 	resp, err := http.Post(targetURL, "application/x-www-form-urlencoded", strings.NewReader(reqBodyStr))

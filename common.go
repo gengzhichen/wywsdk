@@ -15,6 +15,16 @@ const PRODURL = "https://openapi.hudong.qq.com"
 const URIAUTH = "/openapi/apollo_verify_openid_openkey"
 const URIITEM = "/openapi/apollo_game_item_proxy"
 
+// Basic Auth Requirement
+type BasicAuthInfo struct {
+	AppId     string
+	GameId    string
+	AppKey    string
+	OpenId    string
+	OpenKey   string
+	IsSandbox bool
+}
+
 // Wyw Login Response
 type RespWywLogin struct {
 	Ret int    `json:"ret"`
