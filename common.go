@@ -52,8 +52,8 @@ type RespGetItemList struct {
 }
 
 type ConsumeItem struct {
-	Id  int `json:"id"`
-	Seq int `json:"seq"`
+	Id  int    `json:"id"`
+	Seq string `json:"seq"`
 }
 
 type ConsumeItemList struct {
