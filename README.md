@@ -1,7 +1,8 @@
 #玩一玩平台 后台验证登录流程模块 Golang 版本
 ##Usage
 
-###基础人证信息
+###Basic Auth Struct
+
 ```go
 type BasicAuthInfo struct {
  	AppId     string
@@ -12,19 +13,27 @@ type BasicAuthInfo struct {
  	IsSandbox bool
  }
 ```
-###认证
+
+###Auth
+
 ```go
 wywauth.CheckWywAuth(basicAuth BasicAuthInfo)
 ```
-###获取道具一览
+
+###Get Item List
+
 ```go
 wywauth.GetItemList(basicAuth BasicAuthInfo)
 ```
-###消耗道具
+
+###Consume Items
+
 ```go
 wywauth.ConsumeItems(basicAuth BasicAuthInfo, itemId int, itemCnt int)
 ```
-###赠送道具
+
+###Gift Items
+
 ```go
 wywauth.GiftItems(basicAuth BasicAuthInfo, itemId int, itemCnt int,  actType int)
 ```
