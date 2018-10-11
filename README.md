@@ -2,23 +2,29 @@
 ##Usage
 
 ###基础人证信息
-`type BasicAuthInfo struct {
+```go
+type BasicAuthInfo struct {
  	AppId     string
  	GameId    string
  	AppKey    string
  	OpenId    string
  	OpenKey   string
  	IsSandbox bool
- }`
-
+ }
+```
 ###认证
-`wywauth.CheckWywAuth(basicAuth BasicAuthInfo)`
-
+```go
+wywauth.CheckWywAuth(basicAuth BasicAuthInfo)
+```
 ###获取道具一览
-`wywauth.GetItemList(basicAuth BasicAuthInfo)`
-
+```go
+wywauth.GetItemList(basicAuth BasicAuthInfo)
+```
 ###消耗道具
-`wywauth.ConsumeItems(basicAuth BasicAuthInfo, itemId int, itemCnt int)`
-
+```go
+wywauth.ConsumeItems(basicAuth BasicAuthInfo, itemId int, itemCnt int)
+```
 ###赠送道具
-`wywauth.GiftItems(basicAuth BasicAuthInfo, itemId int, itemCnt int,  actType int)`
+```go
+wywauth.GiftItems(basicAuth BasicAuthInfo, itemId int, itemCnt int,  actType int)
+```
